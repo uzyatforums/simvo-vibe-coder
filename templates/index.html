@@ -1,209 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Species Catalogue | Vibe-Coder</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-start: #ffccb5; 
-            --bg-end: #ffeeb3;   
-            --card-bg: rgba(255, 255, 255, 0.7);
-            --primary-gradient: linear-gradient(135deg, #f87171 0%, #fb923c 50%, #facc15 100%);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Species Catalogue | Vibe-Coder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-start: #ffccb5;
+      --bg-end: #ffeeb3;
+      --card-bg: rgba(255, 255, 255, 0.7);
+      --primary-gradient: linear-gradient(135deg, #f87171 0%, #fb923c 50%, #facc15 100%);
+    }
 
-        * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: linear-gradient(to bottom right, var(--bg-start), var(--bg-end));
-            background-attachment: fixed;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
-        }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(to bottom right, var(--bg-start), var(--bg-end));
+      background-attachment: fixed;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
 
-        .search-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 32px;
-            text-align: center;
-            backdrop-filter: blur(20px);
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            margin-bottom: 40px;
-        }
+    .search-card {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 32px;
+      text-align: center;
+      backdrop-filter: blur(20px);
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      margin-bottom: 40px;
+    }
 
-        h1 {
-            font-size: 2.5rem;
-            margin: 0;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        .search-input-wrapper {
-            background: white;
-            padding: 12px 20px;
-            border-radius: 16px;
-            margin-top: 20px;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
+    .search-input-wrapper {
+      background: white;
+      padding: 12px 20px;
+      border-radius: 16px;
+      margin-top: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
 
-        input { width: 100%; border: none; outline: none; font-size: 1rem; color: #1a1a1a; }
+    input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      color: #1a1a1a;
+    }
 
-        /* 5-Column Grid */
-        #resultsGrid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 15px;
-            width: 100%;
-            max-width: 1400px;
-        }
+    /* 5-Column Grid */
+    #resultsGrid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+      width: 100%;
+      max-width: 1400px;
+    }
 
-        @media (max-width: 1200px) { #resultsGrid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 768px) { #resultsGrid { grid-template-columns: repeat(1, 1fr); } }
+    @media (max-width: 1200px) {
+      #resultsGrid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
 
-        /* Beautified Animal Card */
-        .animal-card {
-            background: white;
-            border-radius: 24px;
-            padding: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
-            display: flex;
-            flex-direction: column;
-            border: 1px solid rgba(255,255,255,0.8);
-            animation: slideUp 0.4s ease forwards;
-        }
+    @media (max-width: 768px) {
+      #resultsGrid {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
 
-        .animal-card img {
-            width: 100%;
-            height: 130px;
-            object-fit: cover;
-            border-radius: 18px;
-            margin-bottom: 10px;
-        }
+    /* Beautified Animal Card */
+    .animal-card {
+      background: white;
+      border-radius: 24px;
+      padding: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      animation: slideUp 0.4s ease forwards;
+    }
 
-        .info-container { padding: 4px; }
+    .animal-card img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 18px;
+      margin-bottom: 10px;
+    }
 
-        .common-name {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #111;
-            margin-bottom: 8px;
-            display: block;
-        }
+    .info-container {
+      padding: 4px;
+    }
 
-        .data-row {
-            font-size: 0.72rem; /* Smaller font for more data */
-            margin-bottom: 4px;
-            color: #4b5563;
-            display: flex;
-            gap: 4px;
-        }
+    .common-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 8px;
+      display: block;
+    }
 
-        .label { font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
-        .value { color: #1f2937; }
+    .data-row {
+      font-size: 0.72rem;
+      /* Smaller font for more data */
+      margin-bottom: 4px;
+      color: #4b5563;
+      display: flex;
+      gap: 4px;
+    }
 
-        .tag-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-top: 6px;
-        }
+    .label {
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-        .tag {
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 6px;
-            background: #f3f4f6;
-            color: #4b5563;
-        }
+    .value {
+      color: #1f2937;
+    }
 
-        .status-badge {
-            margin-top: auto;
-            font-size: 0.65rem;
-            font-weight: 800;
-            text-align: center;
-            padding: 4px;
-            border-radius: 8px;
-            text-transform: uppercase;
-        }
+    .tag-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
 
-        .status-extinct { background: #fee2e2; color: #ef4444; }
-        .status-alive { background: #dcfce7; color: #16a34a; }
+    .tag {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #f3f4f6;
+      color: #4b5563;
+    }
 
-        /* Spinner */
-        .spinner {
-            display: none;
-            width: 30px;
-            height: 30px;
-            border: 3px solid rgba(0,0,0,0.1);
-            border-radius: 50%;
-            border-top-color: #fb923c;
-            animation: spin 1s linear infinite;
-            margin: 15px auto;
-        }
+    .status-badge {
+      margin-top: auto;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-align: center;
+      padding: 4px;
+      border-radius: 8px;
+      text-transform: uppercase;
+    }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+    .status-extinct {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    .status-alive {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    /* Spinner */
+    .spinner {
+      display: none;
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: #fb923c;
+      animation: spin 1s linear infinite;
+      margin: 15px auto;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-    <div class="search-card">
-        <h1>Species Catalogue</h1>
-        <div class="search-input-wrapper">
-            <input type="text" id="speciesInput" placeholder="Press Enter to search..." autofocus>
-        </div>
-        <div id="loadingSpinner" class="spinner"></div>
-
-        <p class="search-tip">
-            Tip: Try <em>"Panthera leo"</em>, <em>"Monarch butterfly"</em>, or <em>"Ginkgo biloba"</em>.
-        </p>
+  <div class="search-card">
+    <h1>Species Catalogue</h1>
+    <div class="search-input-wrapper">
+      <input type="text" id="speciesInput" placeholder="Press Enter to search..." autofocus>
     </div>
+    <div id="loadingSpinner" class="spinner"></div>
 
-    <div id="resultsGrid"></div>
+    <p class="search-tip">
+      Tip: Try <em>"Panthera leo"</em>, <em>"Monarch butterfly"</em>, or <em>"Ginkgo biloba"</em>.
+    </p>
+  </div>
 
-    <script>
-        const input = document.getElementById('speciesInput');
-        const grid = document.getElementById('resultsGrid');
-        const spinner = document.getElementById('loadingSpinner');
+  <div id="resultsGrid"></div>
 
-        async function search() {
-            const term = input.value.trim();
-            if (!term) return;
+  <script>
+    const input = document.getElementById('speciesInput');
+    const grid = document.getElementById('resultsGrid');
+    const spinner = document.getElementById('loadingSpinner');
 
-            grid.innerHTML = "";
-            spinner.style.display = "block";
+    async function search() {
+      const term = input.value.trim();
+      if (!term) return;
 
-            try {
-                const response = await fetch(`http://127.0.0.1:8000/species?search=${encodeURIComponent(term)}`);
-                const data = await response.json();
-                spinner.style.display = "none";
+      grid.innerHTML = "";
+      spinner.style.display = "block";
 
-                if (!data || data.length === 0) {
-                    grid.innerHTML = "<p style='grid-column:1/-1; text-align:center;'>No species found.</p>";
-                    return;
-                }
+      try {
+        // const response = await fetch(`http://127.0.0.1:8000/species?search=${encodeURIComponent(term)}`);
+        // Remove the http://127.0.0.1:8000 part entirely
+        const response = await fetch(`/species?search=${encodeURIComponent(term)}`);
+        const data = await response.json();
+        spinner.style.display = "none";
 
-                data.forEach(animal => {
-                    const img = animal.images.length > 0 ? animal.images[0].url : 'https://via.placeholder.com/300x130?text=No+Photo';
-                    
-                    // Create Habitat Tags
-                    const habitatTags = animal.habitats.length > 0 
-                        ? animal.habitats.map(h => `<span class="tag">${h}</span>`).join('') 
-                        : '<span class="tag">Unknown</span>';
+        if (!data || data.length === 0) {
+          grid.innerHTML = "<p style='grid-column:1/-1; text-align:center;'>No species found.</p>";
+          return;
+        }
 
-                    const card = document.createElement('div');
-                    card.className = 'animal-card';
-                    card.innerHTML = `
+        data.forEach(animal => {
+          const img = animal.images.length > 0 ? animal.images[0].url : 'https://via.placeholder.com/300x130?text=No+Photo';
+
+          // Create Habitat Tags
+          const habitatTags = animal.habitats.length > 0
+            ? animal.habitats.map(h => `<span class="tag">${h}</span>`).join('')
+            : '<span class="tag">Unknown</span>';
+
+          const card = document.createElement('div');
+          card.className = 'animal-card';
+          card.innerHTML = `
                         <img src="${img}" alt="${animal.vernacularName}">
                         <div class="info-container">
                             <span class="common-name">${animal.vernacularName !== 'N/A' ? animal.vernacularName : 'Unknown'}</span>
@@ -219,15 +274,16 @@
                             </div>
                         </div>
                     `;
-                    grid.appendChild(card);
-                });
-            } catch (err) {
-                spinner.style.display = "none";
-                grid.innerHTML = "<p style='color:red; grid-column:1/-1; text-align:center;'>Error: Server not reached.</p>";
-            }
-        }
+          grid.appendChild(card);
+        });
+      } catch (err) {
+        spinner.style.display = "none";
+        grid.innerHTML = "<p style='color:red; grid-column:1/-1; text-align:center;'>Error: Server not reached.</p>";
+      }
+    }
 
-        input.addEventListener('keypress', (e) => { if (e.key === 'Enter') search(); });
-    </script>
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') search(); });
+  </script>
 </body>
+
 </html>
