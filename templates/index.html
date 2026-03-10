@@ -3,195 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Species Catalogue</title>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@700&display=swap" rel="stylesheet">
+    <title>Species Catalogue | Vibe-Coder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Pastels matching the reference */
-            --bg-start: #ffccb5; /* Peach-pink */
-            --bg-end: #ffeeb3;   /* Pastel-yellow */
-            
-            --card-bg: rgba(255, 255, 255, 0.4); /* Glass Effect */
-            
-            --text-heading: #1a1a1a;
-            --text-sub: #6b7280;
-            
-            /* Gradient for Title & Submit Button */
+            --bg-start: #ffccb5; 
+            --bg-end: #ffeeb3;   
+            --card-bg: rgba(255, 255, 255, 0.7);
             --primary-gradient: linear-gradient(135deg, #f87171 0%, #fb923c 50%, #facc15 100%);
         }
 
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
-            padding: 0;
+            min-height: 100vh;
             background: linear-gradient(to bottom right, var(--bg-start), var(--bg-end));
+            background-attachment: fixed;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
-            -webkit-font-smoothing: antialiased;
+            padding: 40px 20px;
         }
 
-        /* The Main Glass Container */
-        .catalogue-card {
+        .search-card {
             background: var(--card-bg);
-            padding: 56px 64px;
-            border-radius: 40px;
+            padding: 30px;
+            border-radius: 32px;
             text-align: center;
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            width: 90%;
-            max-width: 800px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            margin-bottom: 40px;
         }
 
         h1 {
-            font-family: 'Plus Jakarta Sans', 'SF Pro Display', sans-serif;
-            font-weight: 700;
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             margin: 0;
-            letter-spacing: -0.05em;
-            line-height: 1.1;
-            /* Applying the multi-color gradient to the text */
             background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .subtitle {
-            font-size: 1.25rem;
-            color: var(--text-heading);
-            margin-top: 10px;
-            margin-bottom: 48px;
-            font-weight: 500;
-        }
-
-        /* The Custom Search Bar Group */
-        .search-wrapper {
+        .search-input-wrapper {
             background: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 12px 20px;
+            border-radius: 16px;
+            margin-top: 20px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        input { width: 100%; border: none; outline: none; font-size: 1rem; color: #1a1a1a; }
+
+        /* 5-Column Grid */
+        #resultsGrid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
             width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            transition: all 0.3s ease;
+            max-width: 1400px;
         }
 
-        .search-wrapper:focus-within {
-            box-shadow: 0 12px 24px -10px rgba(248, 113, 113, 0.3);
-            border-color: rgba(248, 113, 113, 0.4);
-        }
+        @media (max-width: 1200px) { #resultsGrid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { #resultsGrid { grid-template-columns: repeat(1, 1fr); } }
 
-        /* Magnifying Glass Icon (SVG) */
-        .search-icon {
-            color: #d1d5db; /* Grey icon initially */
+        /* Beautified Animal Card */
+        .animal-card {
+            background: white;
+            border-radius: 24px;
+            padding: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
+            border: 1px solid rgba(255,255,255,0.8);
+            animation: slideUp 0.4s ease forwards;
         }
 
-        input {
-            flex: 1;
-            border: none;
-            outline: none;
-            padding: 12px 4px;
-            font-size: 1.15rem;
-            color: var(--text-heading);
-            background: transparent;
-            font-weight: 400;
+        .animal-card img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 18px;
+            margin-bottom: 10px;
         }
 
-        input::placeholder {
-            color: #d1d5db;
-        }
+        .info-container { padding: 4px; }
 
-        /* Enter Button Matching Reference Aesthetic */
-        .submit-btn {
-            background: #f8f9fa; /* Off-white from reference */
-            color: #6b7280;
-            border: 1px solid #e5e7eb;
-            padding: 10px 22px;
-            border-radius: 14px;
-            font-weight: 500;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .submit-btn:hover {
-            background: #f1f3f5;
-            color: #1a1a1a;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-        }
-
-        /* The "Tip:" Footer matching reference */
-        .search-tip {
-            margin-top: 24px;
-            color: var(--text-sub);
+        .common-name {
             font-size: 0.95rem;
-            font-weight: 400;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 8px;
+            display: block;
         }
-        
-        .search-tip em {
-            font-style: normal;
-            font-weight: 600;
+
+        .data-row {
+            font-size: 0.72rem; /* Smaller font for more data */
+            margin-bottom: 4px;
+            color: #4b5563;
+            display: flex;
+            gap: 4px;
+        }
+
+        .label { font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+        .value { color: #1f2937; }
+
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        .tag {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: #f3f4f6;
             color: #4b5563;
         }
+
+        .status-badge {
+            margin-top: auto;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-align: center;
+            padding: 4px;
+            border-radius: 8px;
+            text-transform: uppercase;
+        }
+
+        .status-extinct { background: #fee2e2; color: #ef4444; }
+        .status-alive { background: #dcfce7; color: #16a34a; }
+
+        /* Spinner */
+        .spinner {
+            display: none;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top-color: #fb923c;
+            animation: spin 1s linear infinite;
+            margin: 15px auto;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div class="catalogue-card">
+    <div class="search-card">
         <h1>Species Catalogue</h1>
-        <p class="subtitle">Find info about any species!</p>
-
-        <div class="search-wrapper">
-            <div class="search-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-            </div>
-            
-            <input type="text" id="speciesInput" placeholder="Search by common name or scientific name...">
-            
-            <button class="submit-btn" onclick="search()">Enter</button>
+        <div class="search-input-wrapper">
+            <input type="text" id="speciesInput" placeholder="Press Enter to search..." autofocus>
         </div>
+        <div id="loadingSpinner" class="spinner"></div>
 
         <p class="search-tip">
             Tip: Try <em>"Panthera leo"</em>, <em>"Monarch butterfly"</em>, or <em>"Ginkgo biloba"</em>.
         </p>
     </div>
 
+    <div id="resultsGrid"></div>
+
     <script>
-    function search() {
-        const inputElement = document.getElementById('speciesInput');
-        const searchTerm = inputElement.value;
+        const input = document.getElementById('speciesInput');
+        const grid = document.getElementById('resultsGrid');
+        const spinner = document.getElementById('loadingSpinner');
 
-        if (!searchTerm) {
-            alert("Please enter a species name first!");
-            return;
+        async function search() {
+            const term = input.value.trim();
+            if (!term) return;
+
+            grid.innerHTML = "";
+            spinner.style.display = "block";
+
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/species?search=${encodeURIComponent(term)}`);
+                const data = await response.json();
+                spinner.style.display = "none";
+
+                if (!data || data.length === 0) {
+                    grid.innerHTML = "<p style='grid-column:1/-1; text-align:center;'>No species found.</p>";
+                    return;
+                }
+
+                data.forEach(animal => {
+                    const img = animal.images.length > 0 ? animal.images[0].url : 'https://via.placeholder.com/300x130?text=No+Photo';
+                    
+                    // Create Habitat Tags
+                    const habitatTags = animal.habitats.length > 0 
+                        ? animal.habitats.map(h => `<span class="tag">${h}</span>`).join('') 
+                        : '<span class="tag">Unknown</span>';
+
+                    const card = document.createElement('div');
+                    card.className = 'animal-card';
+                    card.innerHTML = `
+                        <img src="${img}" alt="${animal.vernacularName}">
+                        <div class="info-container">
+                            <span class="common-name">${animal.vernacularName !== 'N/A' ? animal.vernacularName : 'Unknown'}</span>
+                            
+                            <div class="data-row"><span class="label">Scientific:</span><span class="value"><em>${animal.scientificName}</em></span></div>
+                            <div class="data-row"><span class="label">Kingdom:</span><span class="value">${animal.kingdom}</span></div>
+                            
+                            <div class="label" style="font-size: 0.65rem; margin-top:8px;">Habitats:</div>
+                            <div class="tag-group">${habitatTags}</div>
+                            
+                            <div class="status-badge ${animal.extinct ? 'status-extinct' : 'status-alive'}">
+                                ${animal.extinct ? 'Threat: Extinct' : 'Threat: Existing'}
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                spinner.style.display = "none";
+                grid.innerHTML = "<p style='color:red; grid-column:1/-1; text-align:center;'>Error: Server not reached.</p>";
+            }
         }
 
-        // The alert you requested
-        alert(`Searching for: ${searchTerm}`);
-
-        // Proceed to trigger your FastAPI endpoint
-        window.location.href = `/species?search=${encodeURIComponent(searchTerm)}`;
-    }
-
-    // Optional: Allow the "Enter" key on the keyboard to trigger the search too
-    document.getElementById('speciesInput').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            search();
-        }
-    });
-</script>
+        input.addEventListener('keypress', (e) => { if (e.key === 'Enter') search(); });
+    </script>
 </body>
 </html>
